@@ -1,0 +1,195 @@
+@import "@fontsource-variable/bricolage-grotesque";
+@import "tailwindcss";
+@source "./**/*.{ts,tsx}";
+@source "./components/HeroOrbit.tsx";
+
+@theme {
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-brand: "Bricolage Grotesque Variable", "Segoe UI", sans-serif;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background: #ffffff;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background-color: #ffffff;
+    color: #0c0a09;
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  a,
+  input {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button,
+  a {
+    touch-action: manipulation;
+  }
+
+  ::selection {
+    background: #0c0a09;
+    color: white;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    html.custom-cursor,
+    html.custom-cursor * {
+      cursor: none !important;
+    }
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .press-feedback {
+    transition: transform 160ms var(--ease-out);
+  }
+
+  .press-feedback:active {
+    transform: scale(0.97);
+  }
+
+  .tile-pastel {
+    border: 1px solid rgba(12, 10, 9, 0.06);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tile-pastel:hover {
+      border-color: rgba(12, 10, 9, 0.14);
+    }
+
+    .tile-label {
+      opacity: 0;
+      transition: opacity 150ms var(--ease-out);
+    }
+
+    .tile-pastel:hover .tile-label,
+    .tile-pastel:focus-within .tile-label {
+      opacity: 1;
+    }
+  }
+
+  .dock-active-gradient {
+    background: linear-gradient(
+      135deg,
+      rgba(167, 139, 250, 0.55),
+      rgba(147, 197, 253, 0.45)
+    );
+  }
+
+  .marquee-fog {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 14%,
+      #000 86%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 14%,
+      #000 86%,
+      transparent 100%
+    );
+  }
+
+  .interest-node-size {
+    width: 3.75rem;
+    height: 3.75rem;
+  }
+
+  .interest-node-icon {
+    width: 1.625rem;
+    height: 1.625rem;
+  }
+
+  .interest-center-size {
+    width: 3.75rem;
+    height: 3.75rem;
+  }
+
+  .interest-center-icon {
+    width: 2.375rem;
+    height: 2.375rem;
+  }
+
+  @media (min-width: 640px) {
+    .interest-node-size,
+    .interest-center-size {
+      width: 4.25rem;
+      height: 4.25rem;
+    }
+
+    .interest-node-icon {
+      width: 1.875rem;
+      height: 1.875rem;
+    }
+
+    .interest-center-icon {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .press-feedback:active {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .dock-active-gradient {
+    background: #e7e5e4;
+  }
+
+  .marquee-fog {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  body {
+    color: #000000;
+  }
+
+  input,
+  button,
+  article {
+    border-color: currentColor;
+  }
+}
