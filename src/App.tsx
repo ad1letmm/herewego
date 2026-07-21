@@ -85,12 +85,16 @@ function LogoMark({ className = '' }: { className?: string }) {
   )
 }
 
-function Brand() {
+function Brand({ compact = false }: { compact?: boolean }) {
   const reduceMotion = useReducedMotion()
 
   return (
     <a
-      className="press-feedback inline-flex shrink-0 items-center justify-center gap-2.5 rounded-full border border-stone-200/80 bg-white p-1.5 shadow-lg shadow-stone-950/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-stone-950 sm:py-2 sm:pl-2 sm:pr-4"
+      className={
+        compact
+          ? 'press-feedback inline-flex shrink-0 items-center justify-center rounded-full p-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950'
+          : 'press-feedback inline-flex shrink-0 items-center justify-center gap-2.5 rounded-full border border-stone-200/80 bg-white p-1.5 shadow-lg shadow-stone-950/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-stone-950 sm:py-2 sm:pl-2 sm:pr-4'
+      }
       href="#top"
       aria-label="Ikemde home"
       onClick={(event) => {
@@ -98,10 +102,22 @@ function Brand() {
         scrollToSection('top', reduceMotion)
       }}
     >
-      <LogoMark className="size-9 shadow-sm ring-1 ring-stone-950/10" />
-      <span className="hidden font-brand text-lg font-medium tracking-[-0.02em] text-stone-950 sm:inline">
-        Ikemde
-      </span>
+      <LogoMark
+        className={
+          compact
+            ? 'size-8 shadow-sm ring-1 ring-stone-950/10 sm:size-9'
+            : 'size-9 shadow-sm ring-1 ring-stone-950/10'
+        }
+      />
+      {!compact ? (
+        <span className="hidden font-brand text-lg font-medium tracking-[-0.02em] text-stone-950 sm:inline">
+          Ikemde
+        </span>
+      ) : (
+        <span className="ml-1.5 hidden font-brand text-base font-medium tracking-[-0.02em] text-stone-950 sm:inline">
+          Ikemde
+        </span>
+      )}
     </a>
   )
 }
@@ -328,44 +344,42 @@ function DockNav() {
       className="fixed inset-x-0 bottom-0 z-50 flex justify-center px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-4 sm:pb-[max(1rem,env(safe-area-inset-bottom))]"
       aria-label="Page sections"
     >
-      <div className="flex w-full max-w-3xl flex-col items-stretch gap-2 sm:max-w-2xl sm:flex-row sm:items-center sm:justify-center">
-        <div className="flex justify-center sm:shrink-0">
-          <Brand />
+      <div className="flex w-full max-w-sm items-stretch gap-0.5 rounded-full border border-stone-200 bg-white p-1 shadow-xl shadow-stone-950/10 sm:w-auto sm:max-w-none sm:items-center sm:gap-1 sm:p-1.5">
+        <div className="flex flex-1 items-center justify-center sm:flex-none">
+          <Brand compact />
         </div>
-        <div className="no-scrollbar flex min-w-0 items-center gap-0.5 overflow-x-auto rounded-full border border-stone-200 bg-white p-1 shadow-xl shadow-stone-950/10 sm:flex-none sm:p-1.5">
-          {DOCK_SECTIONS.map((section) => {
-            const isActive = active === section.id
-            return (
-              <a
-                key={section.id}
-                className="press-feedback relative min-w-[3.25rem] shrink-0 rounded-full px-2.5 py-2 text-center text-[10px] font-medium text-stone-600 sm:min-w-0 sm:flex-none sm:px-4 sm:py-2.5 sm:text-sm"
-                href={`#${section.id}`}
-                onClick={(event) => {
-                  event.preventDefault()
-                  scrollToSection(section.id, reduceMotion)
-                }}
+        {DOCK_SECTIONS.map((section) => {
+          const isActive = active === section.id
+          return (
+            <a
+              key={section.id}
+              className="press-feedback relative flex flex-1 items-center justify-center rounded-full px-1 py-2 text-center text-[10px] font-medium text-stone-600 sm:flex-none sm:px-4 sm:py-2.5 sm:text-sm"
+              href={`#${section.id}`}
+              onClick={(event) => {
+                event.preventDefault()
+                scrollToSection(section.id, reduceMotion)
+              }}
+            >
+              {isActive && (
+                <motion.span
+                  className="absolute inset-0 rounded-full bg-stone-950"
+                  layoutId="dock-active"
+                  transition={{
+                    type: 'spring',
+                    bounce: 0,
+                    duration: reduceMotion ? 0 : 0.35,
+                  }}
+                />
+              )}
+              <span
+                className={`relative z-10 ${isActive ? 'text-white' : ''}`}
               >
-                {isActive && (
-                  <motion.span
-                    className="absolute inset-0 rounded-full bg-stone-950"
-                    layoutId="dock-active"
-                    transition={{
-                      type: 'spring',
-                      bounce: 0,
-                      duration: reduceMotion ? 0 : 0.35,
-                    }}
-                  />
-                )}
-                <span
-                  className={`relative z-10 ${isActive ? 'text-white' : ''}`}
-                >
-                  <span className="sm:hidden">{section.shortLabel}</span>
-                  <span className="hidden sm:inline">{section.label}</span>
-                </span>
-              </a>
-            )
-          })}
-        </div>
+                <span className="sm:hidden">{section.shortLabel}</span>
+                <span className="hidden sm:inline">{section.label}</span>
+              </span>
+            </a>
+          )
+        })}
       </div>
     </nav>
   )
@@ -378,7 +392,7 @@ function Hero() {
       id="top"
     >
       <HeroOrbit />
-      <div className="relative z-10 mx-auto flex min-h-[34rem] max-w-2xl flex-col items-center justify-end px-1 pb-24 pt-[11.5rem] text-center sm:min-h-[40rem] sm:justify-center sm:pb-24 sm:pt-40 md:min-h-[44rem] md:pt-44 lg:min-h-[calc(100svh-5rem)] lg:px-0 lg:pt-44">
+      <div className="relative z-10 mx-auto flex min-h-[34rem] max-w-2xl flex-col items-center justify-end px-1 pb-24 pt-[12rem] text-center sm:min-h-[40rem] sm:justify-center sm:pb-24 sm:pt-40 md:min-h-[44rem] md:pt-44 lg:min-h-[calc(100svh-5rem)] lg:px-0 lg:pt-44">
         <Reveal className="flex w-full flex-col items-center">
           <SectionLabel>Clarity for curious minds</SectionLabel>
           <h1 className="font-brand text-[1.875rem] font-medium leading-[1.06] tracking-[-0.035em] text-stone-950 min-[400px]:text-[2.125rem] sm:text-[2.5rem] sm:leading-[1.02] md:text-5xl lg:text-[3.5rem]">
@@ -1145,7 +1159,7 @@ function Footer() {
   return (
     <SectionTransition
       as="footer"
-      className="border-t border-stone-200 px-4 pb-36 pt-8 text-center sm:px-8 sm:pb-28 sm:py-8 lg:px-12"
+      className="border-t border-stone-200 px-4 pb-28 pt-8 text-center sm:px-8 sm:py-8 lg:px-12"
     >
       <p className="text-xs text-stone-500">
         Made for minds that were never meant to fit in one box · © 2026 Ikemde
@@ -1186,7 +1200,7 @@ function App() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-white">
       <CustomCursor />
-      <main className="pb-36 sm:pb-28">
+      <main className="pb-28">
         <Hero />
         <ProblemSection />
         <ProcessSection />

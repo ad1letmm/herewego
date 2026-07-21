@@ -18,8 +18,8 @@ type OrbitCard = {
   rotateX: number
   translateZ: number
   objectPosition?: string
-  hiddenOnMobile?: boolean
-  hiddenOnTablet?: boolean
+  /** Hide only on the smallest phones; show from sm+ */
+  mobileOptional?: boolean
 }
 
 const orbitCards: OrbitCard[] = [
@@ -27,31 +27,28 @@ const orbitCards: OrbitCard[] = [
     label: 'Ideas',
     image: ideasImg,
     position:
-      'left-[1%] top-[42%] sm:left-[2%] sm:top-[40%] lg:left-[1%] lg:top-[48%]',
+      'left-[0.5%] top-[38%] sm:left-[1.5%] sm:top-[40%] lg:left-[1%] lg:top-[48%]',
     rotateY: 32,
     rotateX: 8,
     translateZ: -28,
     objectPosition: 'center',
-    hiddenOnMobile: true,
-    hiddenOnTablet: true,
+    mobileOptional: true,
   },
   {
     label: 'Photography',
     image: photographyImg,
     position:
-      'left-[3%] top-[22%] sm:left-[5%] sm:top-[20%] lg:left-[5%] lg:top-[24%]',
+      'left-[2%] top-[18%] sm:left-[4%] sm:top-[18%] lg:left-[5%] lg:top-[24%]',
     rotateY: 24,
     rotateX: 5,
     translateZ: -12,
     objectPosition: 'center 40%',
-    hiddenOnMobile: true,
-    hiddenOnTablet: true,
   },
   {
     label: 'Writing',
     image: writingImg,
     position:
-      'left-[6%] top-[4%] sm:left-[10%] sm:top-[6%] md:left-[14%] md:top-[8%] lg:left-[16%] lg:top-[9%]',
+      'left-[8%] top-[3%] sm:left-[12%] sm:top-[5%] md:left-[14%] md:top-[8%] lg:left-[16%] lg:top-[9%]',
     rotateY: 14,
     rotateX: 2,
     translateZ: 8,
@@ -61,7 +58,7 @@ const orbitCards: OrbitCard[] = [
     label: 'Gardening',
     image: gardeningImg,
     position:
-      'left-[22%] top-[0%] sm:left-[26%] sm:top-[1%] md:left-[28%] md:top-[2%] lg:left-[30%] lg:top-[2%]',
+      'left-[24%] top-[0%] sm:left-[26%] sm:top-[1%] md:left-[28%] md:top-[2%] lg:left-[30%] lg:top-[2%]',
     rotateY: 7,
     rotateX: 0,
     translateZ: 22,
@@ -71,7 +68,7 @@ const orbitCards: OrbitCard[] = [
     label: 'Design',
     image: designImg,
     position:
-      'left-[calc(50%-1.375rem)] top-[0%] sm:left-[calc(50%-1.75rem)] sm:top-[0.5%] lg:left-[calc(50%-3rem)] lg:top-[0.5%]',
+      'left-[calc(50%-1.25rem)] top-[0%] sm:left-[calc(50%-1.75rem)] sm:top-[0.5%] lg:left-[calc(50%-3rem)] lg:top-[0.5%]',
     rotateY: 0,
     rotateX: -2,
     translateZ: 36,
@@ -81,7 +78,7 @@ const orbitCards: OrbitCard[] = [
     label: 'Painting',
     image: paintingImg,
     position:
-      'right-[22%] top-[0%] sm:right-[26%] sm:top-[1%] md:right-[28%] md:top-[2%] lg:right-[30%] lg:top-[2%]',
+      'right-[24%] top-[0%] sm:right-[26%] sm:top-[1%] md:right-[28%] md:top-[2%] lg:right-[30%] lg:top-[2%]',
     rotateY: -7,
     rotateX: 0,
     translateZ: 22,
@@ -91,7 +88,7 @@ const orbitCards: OrbitCard[] = [
     label: 'Music',
     image: musicImg,
     position:
-      'right-[6%] top-[4%] sm:right-[10%] sm:top-[6%] md:right-[14%] md:top-[8%] lg:right-[16%] lg:top-[9%]',
+      'right-[8%] top-[3%] sm:right-[12%] sm:top-[5%] md:right-[14%] md:top-[8%] lg:right-[16%] lg:top-[9%]',
     rotateY: -14,
     rotateX: 2,
     translateZ: 8,
@@ -101,36 +98,27 @@ const orbitCards: OrbitCard[] = [
     label: 'Cooking',
     image: cookingImg,
     position:
-      'right-[3%] top-[22%] sm:right-[5%] sm:top-[20%] lg:right-[5%] lg:top-[24%]',
+      'right-[2%] top-[18%] sm:right-[4%] sm:top-[18%] lg:right-[5%] lg:top-[24%]',
     rotateY: -24,
     rotateX: 5,
     translateZ: -12,
     objectPosition: 'center 30%',
-    hiddenOnMobile: true,
-    hiddenOnTablet: true,
   },
   {
     label: 'Fitness',
     image: fitnessImg,
     position:
-      'right-[1%] top-[42%] sm:right-[2%] sm:top-[40%] lg:right-[2%] lg:top-[46%]',
+      'right-[0.5%] top-[38%] sm:right-[1.5%] sm:top-[40%] lg:right-[2%] lg:top-[46%]',
     rotateY: -32,
     rotateX: 8,
     translateZ: -28,
     objectPosition: 'center 45%',
-    hiddenOnMobile: true,
-    hiddenOnTablet: true,
+    mobileOptional: true,
   },
 ]
 
 function cardVisibility(card: OrbitCard) {
-  if (card.hiddenOnMobile && card.hiddenOnTablet) {
-    return 'hidden lg:block'
-  }
-  if (card.hiddenOnMobile) {
-    return 'block'
-  }
-  return 'block'
+  return card.mobileOptional ? 'hidden min-[400px]:block' : 'block'
 }
 
 function cardPose(card: OrbitCard, y = 0, scale = 1, zBoost = 0) {
@@ -198,7 +186,7 @@ function OrbitCardItem({
           style={{ transformStyle: 'preserve-3d' }}
         >
           <div
-            className="relative flex h-16 w-11 flex-col justify-end overflow-hidden rounded-lg border border-white/90 transition-[box-shadow] duration-200 sm:h-20 sm:w-14 sm:rounded-xl md:h-24 md:w-[4.5rem] md:rounded-2xl lg:h-32 lg:w-24"
+            className="relative flex h-14 w-10 flex-col justify-end overflow-hidden rounded-lg border border-white/90 transition-[box-shadow] duration-200 sm:h-20 sm:w-14 sm:rounded-xl md:h-24 md:w-[4.5rem] md:rounded-2xl lg:h-32 lg:w-24"
             style={{
               boxShadow: hovered
                 ? `
@@ -248,7 +236,7 @@ function OrbitCardItem({
               }}
             />
 
-            <span className="relative z-[1] m-1 rounded-full bg-white/85 px-1 py-0.5 text-center text-[7px] font-semibold text-stone-800 shadow-[0_4px_10px_-6px_rgba(12,10,9,0.4)] backdrop-blur-sm sm:m-1.5 sm:px-1.5 sm:py-1 sm:text-[8px] md:m-2 md:px-2 md:text-[9px]">
+            <span className="relative z-[1] m-1 truncate rounded-full bg-white/85 px-1 py-0.5 text-center text-[6px] font-semibold text-stone-800 shadow-[0_4px_10px_-6px_rgba(12,10,9,0.4)] backdrop-blur-sm sm:m-1.5 sm:px-1.5 sm:py-1 sm:text-[8px] md:m-2 md:px-2 md:text-[9px]">
               {card.label}
             </span>
           </div>
@@ -264,7 +252,7 @@ export default function HeroOrbit() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-0 h-[11rem] sm:h-[13rem] md:h-[15rem] lg:inset-0 lg:h-auto [perspective:1100px] [transform-style:preserve-3d]"
+      className="pointer-events-none absolute inset-x-0 top-0 h-[10.5rem] sm:h-[13rem] md:h-[15rem] lg:inset-0 lg:h-auto [perspective:1100px] [transform-style:preserve-3d]"
     >
       {orbitCards.map((card, index) => (
         <OrbitCardItem
